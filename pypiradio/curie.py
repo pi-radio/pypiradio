@@ -41,6 +41,16 @@ class Curie:
                         params={'trx': trx, 'chan': chan, 'v': g })
 
     @property
+    def biases(self):
+        r = self._s.get(self.url_base + "bias")
+        
+        return json.loads(r.text)
+
+    def set_bias(self, chan, iq, bias):
+        r = self._s.get(self.url_base + "bias",
+                        params={'iq': iq, 'chan': chan, 'v': bias })
+    
+    @property
     def rx0_gain(self):
         return self.gains['rx']['0']
 
@@ -72,3 +82,37 @@ class Curie:
     def tx1_gain(self, v):
         self.set_gain('tx', '1', v)
 
+
+    @property
+    def I0_bias(self):
+        return self.biases['0']['I']
+
+    @I0_bias.setter
+    def I0_bias(self, v):
+        self.set_bias('0', 'I', v)
+
+    @property
+    def I1_bias(self):
+        return self.biases['1']['I']
+
+    @I1_bias.setter
+    def I1_bias(self, v):
+        self.set_bias('1', 'I', v)
+        
+    @property
+    def Q0_bias(self):
+        return self.biases['0']['Q']
+    
+    @Q0_bias.setter
+    def Q0_bias(self, v):
+        self.set_bias('0', 'Q', v)
+
+    @property
+    def Q1_bias(self):
+        return self.biases['1']['Q']
+
+    @Q1_bias.setter
+    def Q1_bias(self, v):
+        self.set_bias('1', 'Q', v)
+
+        
